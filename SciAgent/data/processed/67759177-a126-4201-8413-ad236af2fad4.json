@@ -1,0 +1,153 @@
+{
+  "filename": "Automatic Cobb Angle Detection using Vertebra.pdf",
+  "file_id": "67759177-a126-4201-8413-ad236af2fad4",
+  "chunks": [
+    {
+      "content": "Automatic Cobb Angle Detection using Vertebra\nDetector and Vertebra Corners Regression\nBidur Khanal1, Lavsen Dahal1, Prashant Adhikari2, and Bishesh Khanal 1\n1 NepAl Applied Mathematics and Informatics Institute for Research (NAAMII)\n{bidur.khanal, lavsen.dahal, bishesh.khanal}@naamii.org.np\n2 Hospital for Advanced Medical Surgery (HAMS), Kathmandu, Nepal\nAbstract. Correct evaluation and treatment of Scoliosis require accu-\nrate estimation of spinal curvature. Current gold standard is to manually\nestimate Cobb Angles in spinal X-ray images which is time consuming\nand has high inter-rater variability. We propose an automatic method\nwith a novel framework that ﬁrst detects vertebrae as objects followed\nby a landmark detector that estimates the 4 landmark corners of each\nvertebra separately. Cobb Angles are calculated using the slope of each\nvertebra obtained from the predicted landmarks.",
+      "metadata": {
+        "page": 1,
+        "source": "Sayfa 1"
+      }
+    },
+    {
+      "content": "s followed\nby a landmark detector that estimates the 4 landmark corners of each\nvertebra separately. Cobb Angles are calculated using the slope of each\nvertebra obtained from the predicted landmarks. For inference on test\ndata, we perform pre and post processings that include cropping, outlier\nrejection and smoothing of the predicted landmarks. The results were as-\nsessed in AASCE MICCAI challenge 2019 which showed a promise with\na SMAPE score of 25.69 on the challenge test set. Keywords: Scoliosis ·Landmark ·Object Detection ·Cobb Angle. 1 Introduction\nScoliosis is a sideways curvature of the spine occurring mostly in teens. Severe\nscoliosis can also lead to disability. The current gold standard for diagnosing\nscoliosis is manual measurement of Cobb Angles in anterior-posterior (AP) or\nlateral (LAT) X-ray images which involve identifying the most tilted vertebrae\nabove and below the apex of the spinal curve [1].",
+      "metadata": {
+        "page": 1,
+        "source": "Sayfa 1"
+      }
+    },
+    {
+      "content": "sis is manual measurement of Cobb Angles in anterior-posterior (AP) or\nlateral (LAT) X-ray images which involve identifying the most tilted vertebrae\nabove and below the apex of the spinal curve [1]. However, the procedure is time-\nconsuming and observer dependent, leading to high inter-observer variability\nthat could negatively impact assessing prognosis and treatment decisions [2]. Thus, there has been increasing interest in automatic estimation of Cobb angles\ndirectly from the X-ray images. In this context, we participated in MICCAI\n2019 challenge on Accurate Automated Spinal Curvature Estimation (AASCE)\n3 where the task was to accurately estimate three Cobb angles [3] from the\ntraining dataset containing 609 AP x-rays 4 whose results were assessed on 98\ntest images. The ground truth (GT) annotations are the anatomical landmarks\nconsisting of four corners of 17 vertebrae: twelve thoracic and ﬁve lumbar.",
+      "metadata": {
+        "page": 1,
+        "source": "Sayfa 1"
+      }
+    },
+    {
+      "content": "9 AP x-rays 4 whose results were assessed on 98\ntest images. The ground truth (GT) annotations are the anatomical landmarks\nconsisting of four corners of 17 vertebrae: twelve thoracic and ﬁve lumbar. 3 https://aasce19.grand-challenge.org/Home/\n4 http://spineweb.digitalimaginggroup.ca/spineweb/index.php?n=Main.Datasets\narXiv:1910.14202v1  [cs.CV]  31 Oct 2019",
+      "metadata": {
+        "page": 1,
+        "source": "Sayfa 1"
+      }
+    },
+    {
+      "content": "2 B. Khanal et al. Related Work: The two most common approaches of estimating Cobb angles are\nSegmentation based and Landmark based approaches. The segmentation based\nmethods ﬁrst segment all the vertebrae or the end-plates of the vertebrae to iden-\ntify the most tilted vertebrae from which the Cobb angles are estimated [3,4,5]. Accurate segmentation of each vertebra from X-ray images is diﬃcult with tra-\nditional feature-engineering based approaches. To our knowledge, even modern\nsupervised deep neural networks are not robust and accurate enough yet for the\nvertebra segmentation. Creating accurate GT segmentation is time consuming\nand relatively diﬃcult compared to annotating landmarks: four corners of the\nvertebrae. In Landmark based approach which is the state-of-the-art, the four\ncorners of each vertebrae are detected and are subsequently used for estimating\nCobb angles.",
+      "metadata": {
+        "page": 2,
+        "source": "Sayfa 2"
+      }
+    },
+    {
+      "content": "ndmarks: four corners of the\nvertebrae. In Landmark based approach which is the state-of-the-art, the four\ncorners of each vertebrae are detected and are subsequently used for estimating\nCobb angles. Some methods jointly estimate all the landmarks and Cobb angles,\nwhile others ﬁrst estimate landmarks followed by Cobb angle computation which\nmight include outlier rejection and post-processing techniques [6,7]. There are several approaches of detecting landmarks in medical images such\nas Reinforcement learning [8], iterative patch based approaches [9] and fully\nconvolutional neural network based approaches [10]. One important diﬀerence\nin vertebra landmarks compared to other anatomical landmarks is the pres-\nence of a large number of similar looking vertebrae.",
+      "metadata": {
+        "page": 2,
+        "source": "Sayfa 2"
+      }
+    },
+    {
+      "content": "volutional neural network based approaches [10]. One important diﬀerence\nin vertebra landmarks compared to other anatomical landmarks is the pres-\nence of a large number of similar looking vertebrae. We believe that detecting\nvertebrae as objects before ﬁnding landmarks within the detected vertebrae is\nadvantageous as it allows: i) avoiding diﬃculty for translation equivariant CNNs\nto learn very diﬀerent coordinate locations for almost identical appearing ver-\ntebrae ii) leveraging popular object detectors pre-trained for computer vision\ntasks iii) Reducing the search space for landmark detector\nContribution: We propose a novel approach to ﬁrst detect 17 vertebrae with\na bounding box object detector, after which each of the predicted boxes is fed\nto a landmark detector as illustrated in Figure 1. The predicted landmarks are\npost-processed to remove outliers before calculating the three Cobb angles.",
+      "metadata": {
+        "page": 2,
+        "source": "Sayfa 2"
+      }
+    },
+    {
+      "content": "ter which each of the predicted boxes is fed\nto a landmark detector as illustrated in Figure 1. The predicted landmarks are\npost-processed to remove outliers before calculating the three Cobb angles. [11]\nused Faster-RCNN [12] object detector to detect intervertebral disc in lateral\nX-rays, but they left the landmark detection as a future work. 2 Dataset\nThe dataset consists of 609 spinal AP x-ray images available at SpineWeb 5 as\nDataset 16 . Each image has 68 GT landmarks corresponding to 4 corners of\nthe 17 vertebrae, and 3 Cobb Angles. Organizers provided test images without\nGT separately. We connected the four landmark corners of each vertebrae to\ncreate a box whose width and height were then increased symmetrically by 50\nand 10 pixels respectively to create GT bounding boxes. All the bounding boxes\nwere labelled as belonging to a single class. The GT bounding boxes were used\nto crop and extract individual vertebrae as a single separate image containing\nfour landmark corners.",
+      "metadata": {
+        "page": 2,
+        "source": "Sayfa 2"
+      }
+    },
+    {
+      "content": "the bounding boxes\nwere labelled as belonging to a single class. The GT bounding boxes were used\nto crop and extract individual vertebrae as a single separate image containing\nfour landmark corners. The coordinates of the landmarks are normalized to the\ncoordinate system that maps all the pixel coordinates of the cropped image to\n5 http://spineweb.digitalimaginggroup.ca/spineweb/index.php?n=Main.Datasets",
+      "metadata": {
+        "page": 2,
+        "source": "Sayfa 2"
+      }
+    },
+    {
+      "content": "Automatic Cobb Angle Detection 3\nthe interval [0, 1]. The normalized landmark coordinates are used as GT labels\nfor the landmark regression network. 3 Vertebrae Detection followed by Landmarks Regression\nWe use an object detector to detect the vertebrae as bounding box objects which\nare then fed to a landmark regression network as separate input images. The\npredicted normalized landmark coordinates from individual bounding boxes are\ncombined and mapped back to the original images as shown in Figure 1. Fig. 1: Proposed Framework: The input images are ﬁrst passed to an object de-\ntector that detects the vertebrae. The detected vertebrae are extracted as indi-\nvidual images and passed to a landmark detector that detects the four corners of\nthe vertebra. The landmarks are mapped back to the original image from which\nCobb angles are calculated. We use CNN-based Faster-RCNN and DenseNet for\nobject detection and landmark detection respectively.",
+      "metadata": {
+        "page": 3,
+        "source": "Sayfa 3"
+      }
+    },
+    {
+      "content": "ertebra. The landmarks are mapped back to the original image from which\nCobb angles are calculated. We use CNN-based Faster-RCNN and DenseNet for\nobject detection and landmark detection respectively. 3.1 Training Vertebra Detection with Faster-RCNN\nFaster-RCNN [12] is a widely used two-stage object detector consisting of: i) a\nRegion Proposal Network (RPN) that proposes potential object regions from a\nset of anchor boxes of various sizes in a sliding window over the feature maps\nextracted from a CNN-based base network ii) a fully connected and a bounding\nbox regression layer that regress bounding box locations of the identiﬁed objects. We used ResNet V1 101 with pre-trained weights on Imagenet data6 as the base\nnetwork, which was ﬁne-tuned after block 2. We used two scales with box areas of\n642 and 1282 pixels, and aspect ratios 1:1 and 2:1 for RPN’s anchor boxes, as the\nvertebrae are relatively small and do not have extreme aspect ratios.",
+      "metadata": {
+        "page": 3,
+        "source": "Sayfa 3"
+      }
+    },
+    {
+      "content": "r block 2. We used two scales with box areas of\n642 and 1282 pixels, and aspect ratios 1:1 and 2:1 for RPN’s anchor boxes, as the\nvertebrae are relatively small and do not have extreme aspect ratios. The network\nwas trained for around 180k steps with batch size 1 using SGD optimizer with\nmomentum 0.9, learning rate 0.0003 and early stopping. The implementation\nwas adopted from Luminoth7 in Tensorﬂow framework 10.1. Data augmentation\nincluded random Gaussian noise (µ= 0, σ= 0.005), and vertical and horizontal\nﬂips with a probability of 0.5. All the images were rescaled preserving the aspect\nratio such that its sizes remained within 600 - 1000 pixels as much as possible. 6 https://github.com/tensorﬂow/models/tree/master/research/slim\n7 https://github.com/tryolabs/luminoth",
+      "metadata": {
+        "page": 3,
+        "source": "Sayfa 3"
+      }
+    },
+    {
+      "content": "4 B. Khanal et al. 3.2 Training Landmark Detector with DenseNet\nThe four corner landmarks were estimated using a Densely Connected Convolu-\ntional Neural Network (DenseNet) which are known to require fewer parameters\nthan traditional CNN [13]. In DenseNet, each layer’s feature maps are used for\nall subsequent layers within a block, where each block constitutes a bottleneck\nlayer (a 2d Convolution layer with 1x1 ﬁlter size), batch normalization, ReLU\nactivation, and a regular 2D convolution layer (3x3 ﬁlter size). We used 5 blocks\nwith a growth rate of 8 which is the number of output feature maps of each\nlayer. The 2D Global Average Pooling is used after 5 blocks followed by a dense\nlayer. The ﬁnal layer consists of 8 output units with a linear activation function. All the input images to landmark detector were resized to 200 x 120 pixels.",
+      "metadata": {
+        "page": 4,
+        "source": "Sayfa 4"
+      }
+    },
+    {
+      "content": "used after 5 blocks followed by a dense\nlayer. The ﬁnal layer consists of 8 output units with a linear activation function. All the input images to landmark detector were resized to 200 x 120 pixels. 4 Pre and Post Processing During Inference\nCropping: Almost all test images contained skull and pelvic regions but none of\nthe training images had them. During training, the model did not see negative\nsamples of skull and pelvic regions making it prone to falsely detect structures\nappearing similar to vertebra such as jaws. We randomly picked one test image\nwith an aspect ratio a0 and found empirically that cropping ct0 = 0 .18 and\ncb0 = 0.21 times the image height from the top and bottom removed skull and\npelvic regions satisfactorily. All the remaining test images with aspect ratio a\nwere cropped by ct= ct0 · a\na0\nand cb= cb0 · a\na0\nfraction of the image height from\nthe top and bottom respectively.",
+      "metadata": {
+        "page": 4,
+        "source": "Sayfa 4"
+      }
+    },
+    {
+      "content": "d\npelvic regions satisfactorily. All the remaining test images with aspect ratio a\nwere cropped by ct= ct0 · a\na0\nand cb= cb0 · a\na0\nfraction of the image height from\nthe top and bottom respectively. Outlier Rejection: We removed some of the outliers by using the fact that adja-\ncent vertebrae cannot be far away from each other: if the x-center (horizontal) of\nany detected bounding box is more than half box width away from the x-centers\nof both of its two nearest neighboring (top and bottom) boxes, they are rejected\nas outliers. For the topmost and bottom boxes, the same test was done against\nonly one nearest neighbor. Curve ﬁtting and Cobb Angle Calculation from Predicted Landmarks: We used\nthe code provided along with the challenge dataset [6] to calculate 3 Cobb angles\n- Main Thoracic (MT), Proximal Thoracic (PT) and Thoracolumbar/Lumbar\n(TL/L) from a given set of landmarks. It did not work well when the number\nof landmarks were not exactly 68 corresponding to the 17 bounding boxes.",
+      "metadata": {
+        "page": 4,
+        "source": "Sayfa 4"
+      }
+    },
+    {
+      "content": "T), Proximal Thoracic (PT) and Thoracolumbar/Lumbar\n(TL/L) from a given set of landmarks. It did not work well when the number\nof landmarks were not exactly 68 corresponding to the 17 bounding boxes. To\nensure exactly 68 landmark points for angle calculation, we used the following\nafter outlier rejection: when the detected vertebrae number is more than 17,\nreject extra bounding boxes starting from the bottom. Similarly, if the number\nis less than 17, duplicate the bottom landmarks as required. We also smoothed\nthe landmarks by ﬁtting a polynomial curve where the degree 6 polynomial gave\nbest ﬁt out of 3 to 8 on visual inspection. The x-coordinate of each landmark\nis regressed by using the y-coordinate as the independent variable of the ﬁtted\npolynomial. The smoothed landmarks were the ones that were used to estimate\nCobb angles in the ﬁnal test score.",
+      "metadata": {
+        "page": 4,
+        "source": "Sayfa 4"
+      }
+    },
+    {
+      "content": "Automatic Cobb Angle Detection 5\n5 Results\nThe results were evaluated with symmetric mean absolute percentage error,\nSMAPE= 1\nN\n∑\nN\n∑\nm |ag−ap|∑\nm (ag+ap) 100%, where we have N(= 98) test images, m(= 3)\nCobb angles per image, GT angle ag and the corresponding predicted angle ap. Table 1: Results for diﬀerent experiment setupsExp no. Processing for Test Images SMAPE\n1 No Cropping 33.3%\n2 Cropping and outlier removal without smoothing 26.79%\n3 Cropping, outlier removal and smoothing with order 6 polynomial\nﬁtting\n25.69%\nTable 1 shows the results of three diﬀerent experiments where we achieved\nour best score in the challenge by cropping, rejecting outliers and smoothing\nthe estimated landmarks. The top score in the leader board was 21.71% when\nthe challenge results entry was closed. Figure 2 shows detected bounding boxes\nand landmarks, and results of outlier rejection and smoothing with polynomial\nﬁtting in 4 example images from test set. Fig.",
+      "metadata": {
+        "page": 5,
+        "source": "Sayfa 5"
+      }
+    },
+    {
+      "content": "challenge results entry was closed. Figure 2 shows detected bounding boxes\nand landmarks, and results of outlier rejection and smoothing with polynomial\nﬁtting in 4 example images from test set. Fig. 2: Anti-clockwise from top left: bounding box detection, outlier rejection,\nlandmark prediction and smoothing of landmarks (green) with polynomial degree\n6 for four images of the test set\n6 Discussion and Conclusion\nDetecting vertebrae as objects before predicting corner landmarks is found to\nbe a promising approach. However, cropping all test images will not generalize\nwell. A more robust object detector trained with images having negative samples\nfrom skull and pelvic regions could eliminate the need of cropping. The proposed",
+      "metadata": {
+        "page": 5,
+        "source": "Sayfa 5"
+      }
+    },
+    {
+      "content": "6 B. Khanal et al. approach does not properly take into account the inter-dependency between\nlandmark positions of diﬀerent vertebrae. A learning algorithm to learn this\ninter-dependency could improve the results. Finally, learning to estimate the\nangles directly from landmarks instead of using the geometric algorithm could\nbe robust to noisy landmark prediction. Acknowledgements This work is supported by NVIDIA GPU donation. We\nalso thank Pro-Mech Minds & Engineering Services for agreeing to partially fund\nconference visit expenses for presenting this work. References\n1. KA Greiner. Adolescent idiopathic scoliosis: radiologic decision-making. Am Fam\nPhysician, 65:1817–22, 2002. 2. Randall T Loder et al. The Assessment of Intraobserver and Interobserver Error in\nthe Measurement of Noncongenital Scoliosis in Children ≤10 Years of Age. Spine,\n29(22):2548–2553, 2004. 3. TA Sardjono et al. Automatic Cobb angle determination from radiographic images.",
+      "metadata": {
+        "page": 6,
+        "source": "Sayfa 6"
+      }
+    },
+    {
+      "content": "ver Error in\nthe Measurement of Noncongenital Scoliosis in Children ≤10 Years of Age. Spine,\n29(22):2548–2553, 2004. 3. TA Sardjono et al. Automatic Cobb angle determination from radiographic images. Spine (Phila Pa 1976), 38:E1256–62, 2013. 4. S Allen et al. Validity and reliability of active shape models for the estimation\nof cobb angle in patients with adolescent idiopathic scoliosis. J Digit Imaging,\n21:208–18, 2008. 5. Junhua Zhang et al. Automatic Cobb measurement of scoliosis based on fuzzy\nHough Transform with vertebral shape prior. J Digit Imaging, 22:463–72, Oct\n2009. 6. Hongbo Wu et al. Automatic Landmark Estimation for Adolescent Idiopathic\nScoliosis Assessment Using BoostNet. In MICCAI 2017, pages 127–135. Springer\nInternational Publishing, 2017. 7. Haoliang Sun et al. Direct Estimation of Spinal Cobb Angles by Structured Multi-\noutput Regression. In IPMI 2017, pages 529–540. Springer International Publish-\ning, 2017. 8. Amir Alansary et al.",
+      "metadata": {
+        "page": 6,
+        "source": "Sayfa 6"
+      }
+    },
+    {
+      "content": "7. Haoliang Sun et al. Direct Estimation of Spinal Cobb Angles by Structured Multi-\noutput Regression. In IPMI 2017, pages 529–540. Springer International Publish-\ning, 2017. 8. Amir Alansary et al. Evaluating reinforcement learning agents for anatomical\nlandmark detection. MedIA, 53:156–164, 2019. 9. Yuanwei Li et al. Fast Multiple Landmark Localisation Using a Patch-Based It-\nerative Network. In – MICCAI 2018, pages 563–571. Springer International Pub-\nlishing, 2018. 10. Christian Payer et al. Integrating spatial conﬁguration into heatmap regression\nbased cnns for landmark localization. MedIA, 54:207–219, 2019. 11. Ruhan Sa et al. Intervertebral disc detection in X-ray images using faster R-CNN. Conf Proc IEEE Eng Med Biol Soc, 2017:564–567, 2017. 12. Shaoqing Ren et al. Faster R-CNN: Towards Real-Time Object Detection with\nRegion Proposal Networks. IEEE TPAMI, 39(6):1137–1149, 2017. 13. Gao Huang et al. Densely Connected Convolutional Networks. In CVPR, 2017.",
+      "metadata": {
+        "page": 6,
+        "source": "Sayfa 6"
+      }
+    }
+  ]
+}
